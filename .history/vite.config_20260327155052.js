@@ -10,5 +10,5 @@ export default defineConfig({
       "@": path.resolve(process.cwd(), "src"),
     },
   },
-  base: "/Flip7-tracker",
+  base: "/Flip",
 });

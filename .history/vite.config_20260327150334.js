@@ -7,8 +7,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "@": path.resolve(process.cwd(), "src"),
-    },
-  },
-  base: "/Flip7-tracker",
+      "@": path.resolve(process.cwd(), "src")
+    }
+  }
 });
