@@ -384,6 +384,14 @@ export default function Flip7App() {
                   <CardHeader>
                     <CardTitle className="flex items-center justify-between">
                       <span>Decision Assistant</span>
+                      <Dialog>
+                        {/* <DialogTrigger asChild>
+                          <Button size="sm" className="rounded-xl">
+                            <Sparkles className="h-4 w-4 mr-2" />
+                            Recommendation
+                          </Button>
+                        </DialogTrigger> */}
+                      </Dialog>
                     </CardTitle>
                   </CardHeader>
 

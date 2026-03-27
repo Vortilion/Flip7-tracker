@@ -345,45 +345,52 @@ export default function Flip7App() {
               <div className="md:col-span-2 space-y-6">
                 <Card className="rounded-xl border-slate-200 bg-white">
                   <CardHeader>
-                    <CardTitle>Top draw chances</CardTitle>
-                    <p>Calculated from current deck composition.</p>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {top5.length === 0 ? (
-                        <p className="text-sm text-slate-600">
-                          No numeric cards left in the deck.
-                        </p>
-                      ) : (
-                        <ul className="text-sm list-disc pl-5">
-                          {top5.map((s) => (
-                            <li key={s.card}>
-                              {s.card}: {s.prob.toFixed(2)}%
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                      <div className="pt-2 text-sm">
-                        Chance to hit a second identical (uniques in hand):{" "}
-                        <strong>{dangerProb.toFixed(2)}%</strong>
-                      </div>
-                      <div
-                        className={
-                          recommendation.level === "warn"
-                            ? "text-red-600"
-                            : "text-emerald-700"
-                        }
-                      >
-                        {recommendation.text}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="rounded-xl border-slate-200 bg-white">
-                  <CardHeader>
                     <CardTitle className="flex items-center justify-between">
                       <span>Decision Assistant</span>
+                      <Dialog>
+                        {/* <DialogTrigger asChild>
+                          <Button size="sm" className="rounded-xl">
+                            <Sparkles className="h-4 w-4 mr-2" />
+                            Recommendation
+                          </Button>
+                        </DialogTrigger> */}
+                        <Card className="rounded-xl border-slate-200 bg-white">
+                          <CardHeader>
+                            <CardTitle>Top draw chances</CardTitle>
+                            <p>Calculated from current deck composition.</p>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="space-y-3">
+                              {top5.length === 0 ? (
+                                <p className="text-sm text-slate-600">
+                                  No numeric cards left in the deck.
+                                </p>
+                              ) : (
+                                <ul className="text-sm list-disc pl-5">
+                                  {top5.map((s) => (
+                                    <li key={s.card}>
+                                      {s.card}: {s.prob.toFixed(2)}%
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                              <div className="pt-2 text-sm">
+                                Chance to hit a second identical (uniques in
+                                hand): <strong>{dangerProb.toFixed(2)}%</strong>
+                              </div>
+                              <div
+                                className={
+                                  recommendation.level === "warn"
+                                    ? "text-red-600"
+                                    : "text-emerald-700"
+                                }
+                              >
+                                {recommendation.text}
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </Dialog>
                     </CardTitle>
                   </CardHeader>
 
