@@ -234,7 +234,14 @@ export default function Flip7App() {
       <div className="mx-auto max-w-7xl px-4 py-8">
         {/* Tabs with Undo + Reset inline */}
         <Tabs defaultValue="play" className="space-y-6">
-          <div className="flex items-center justify-end">
+          <div className="flex items-center justify-between">
+            <TabsList className="flex gap-2 rounded-xl bg-white border border-slate-200">
+              <TabsTrigger value="play">Play</TabsTrigger>
+              <TabsTrigger value="settings">
+                <Settings className="h-4 w-4 mr-2" />
+                Settings
+              </TabsTrigger>
+            </TabsList>
             <div className="flex gap-2">
               <Button
                 variant="outline"
@@ -422,45 +429,6 @@ export default function Flip7App() {
                 </Card>
               </div>
             </div>
-          </TabsContent>
-
-          {/* Settings Tab */}
-          <TabsContent value="settings">
-            <Card className="rounded-xl border-slate-200 bg-white">
-              <CardHeader>
-                <CardTitle>Custom deck</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {allCards.map((c) => (
-                    <div
-                      key={c}
-                      className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2"
-                    >
-                      <span className="text-sm w-20 truncate">{c}</span>
-                      <Input
-                        type="number"
-                        min={0}
-                        value={deck[c]}
-                        onChange={(e) => {
-                          const v = Math.max(0, Number(e.target.value || 0));
-                          setDeck((d) => ({ ...d, [c]: v }));
-                        }}
-                        className="h-8 rounded-xl"
-                      />
-                    </div>
-                  ))}
-                </div>
-                <Button
-                  variant="outline"
-                  className="rounded-xl border-slate-300 bg-white"
-                  onClick={() => setDeck(makeInitialDeck())}
-                >
-                  <RotateCcw className="h-4 w-4 mr-2" />
-                  Restore default deck
-                </Button>
-              </CardContent>
-            </Card>
           </TabsContent>
         </Tabs>
       </div>

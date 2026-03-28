@@ -234,7 +234,14 @@ export default function Flip7App() {
       <div className="mx-auto max-w-7xl px-4 py-8">
         {/* Tabs with Undo + Reset inline */}
         <Tabs defaultValue="play" className="space-y-6">
-          <div className="flex items-center justify-end">
+          <div className="flex items-center justify-between">
+            <TabsList className="flex gap-2 rounded-xl bg-white border border-slate-200">
+              <TabsTrigger value="play">Play</TabsTrigger>
+              <TabsTrigger value="settings">
+                <Settings className="h-4 w-4 mr-2" />
+                Settings
+              </TabsTrigger>
+            </TabsList>
             <div className="flex gap-2">
               <Button
                 variant="outline"
