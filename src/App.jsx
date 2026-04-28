@@ -2,18 +2,9 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Table,
@@ -23,16 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  X,
-  RefreshCw,
-  Shuffle,
-  Sparkles,
-  Hand,
-  Layers,
-  Settings,
-  RotateCcw,
-} from "lucide-react";
+import { X, RefreshCw, Shuffle, Hand, Layers } from "lucide-react";
 
 /* ---------- Utilities ---------- */
 const numberCards = Array.from({ length: 12 }, (_, i) => String(i + 1));
@@ -256,7 +238,10 @@ export default function Flip7App() {
           </div>
 
           {/* Play Tab */}
-          <TabsContent value="play" className="space-y-6">
+          <TabsContent
+            value="play"
+            className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 space-y-6-y-6"
+          >
             <div className="grid md:grid-cols-5 gap-6">
               {/* Left: Deck */}
               <div className="md:col-span-3 space-y-6">
@@ -274,7 +259,7 @@ export default function Flip7App() {
                       value={(totalLeft / totalInitial) * 100}
                       className="h-2 rounded-full mb-4"
                     />
-                    <ScrollArea className="h-[420px] pr-2">
+                    <ScrollArea className="pr-2">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {allCards.map((c) => (
                           <CardPill
@@ -289,7 +274,10 @@ export default function Flip7App() {
                     </ScrollArea>
                   </CardContent>
                 </Card>
+              </div>
 
+              {/* Right: Assistant */}
+              <div className="md:col-span-2 space-y-6">
                 <Card className="rounded-xl border-slate-200 bg-white">
                   <CardHeader>
                     <CardTitle>Your Hand</CardTitle>
@@ -332,10 +320,7 @@ export default function Flip7App() {
                     </div>
                   </CardContent>
                 </Card>
-              </div>
 
-              {/* Right: Assistant */}
-              <div className="md:col-span-2 space-y-6">
                 <Card className="rounded-xl border-slate-200 bg-white">
                   <CardHeader>
                     <CardTitle>Top draw chances</CardTitle>
@@ -422,45 +407,6 @@ export default function Flip7App() {
                 </Card>
               </div>
             </div>
-          </TabsContent>
-
-          {/* Settings Tab */}
-          <TabsContent value="settings">
-            <Card className="rounded-xl border-slate-200 bg-white">
-              <CardHeader>
-                <CardTitle>Custom deck</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {allCards.map((c) => (
-                    <div
-                      key={c}
-                      className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2"
-                    >
-                      <span className="text-sm w-20 truncate">{c}</span>
-                      <Input
-                        type="number"
-                        min={0}
-                        value={deck[c]}
-                        onChange={(e) => {
-                          const v = Math.max(0, Number(e.target.value || 0));
-                          setDeck((d) => ({ ...d, [c]: v }));
-                        }}
-                        className="h-8 rounded-xl"
-                      />
-                    </div>
-                  ))}
-                </div>
-                <Button
-                  variant="outline"
-                  className="rounded-xl border-slate-300 bg-white"
-                  onClick={() => setDeck(makeInitialDeck())}
-                >
-                  <RotateCcw className="h-4 w-4 mr-2" />
-                  Restore default deck
-                </Button>
-              </CardContent>
-            </Card>
           </TabsContent>
         </Tabs>
       </div>
