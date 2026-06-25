@@ -43,9 +43,10 @@ export function sortedHandAfterAdd(hand, card) {
 }
 
 function makeInitialDeck() {
-  const base = { 0: 1 };
-  numberCards.forEach((n, i) => {
-    base[n] = i + 1;
+  const base = {};
+  numberCards.forEach((n) => {
+    const numValue = Number(n);
+    base[n] = numValue === 0 ? 1 : numValue;
   });
   const specials = {
     "+2": 1,
