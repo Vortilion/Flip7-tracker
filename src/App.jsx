@@ -17,7 +17,7 @@ import {
 import { X, RefreshCw, Shuffle, Hand, Layers } from "lucide-react";
 
 /* ---------- Utilities ---------- */
-const numberCards = Array.from({ length: 12 }, (_, i) => String(i + 1));
+const numberCards = Array.from({ length: 13 }, (_, i) => String(i));
 const specialCards = [
   "+2",
   "+4",
