@@ -31,6 +31,17 @@ const specialCards = [
 ];
 const allCards = ["0", ...numberCards, ...specialCards];
 
+export function sortedHandAfterAdd(hand, card) {
+  const newHand = [...hand, card];
+  const numeric = newHand
+    .filter((c) => numberCards.includes(c))
+    .map((c) => Number(c))
+    .sort((a, b) => a - b)
+    .map((n) => String(n));
+  const others = newHand.filter((c) => !numberCards.includes(c));
+  return [...others, ...numeric];
+}
+
 function makeInitialDeck() {
   const base = { 0: 1 };
   numberCards.forEach((n, i) => {
@@ -134,7 +145,7 @@ export default function Flip7App() {
   const addToHand = (card) => {
     if ((deck[card] || 0) > 0) {
       setDeck((d) => ({ ...d, [card]: d[card] - 1 }));
-      setHand((h) => [...h, card]);
+      setHand((h) => sortedHandAfterAdd(h, card));
       setHistory((h) => [{ type: "hand", card }, ...h]);
     }
   };
