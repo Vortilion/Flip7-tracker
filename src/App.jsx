@@ -303,7 +303,7 @@ export default function Flip7App() {
                         {hand.map((c, i) => (
                           <Badge
                             key={`${c}-${i}`}
-                            className="rounded-xl text-sm flex items-center gap-2"
+                            className={`rounded-xl text-sm flex items-center gap-2${!numberCards.includes(c) ? " special-card" : ""}`}
                           >
                             {c}
                             <button
