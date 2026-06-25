@@ -1,3 +1,4 @@
+/* stylelint-disable no-unknown-at-rules */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -69,6 +70,6 @@
 
 @layer components {
   .special-card {
-    @apply !bg-red-300 !text-white;
+    @apply !bg-red-400 !text-white;
   }
 }

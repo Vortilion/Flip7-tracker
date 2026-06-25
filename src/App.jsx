@@ -29,7 +29,7 @@ const specialCards = [
   "flip three",
   "second chance",
 ];
-const allCards = ["0", ...numberCards, ...specialCards];
+const allCards = [...numberCards, ...specialCards];
 
 export function sortedHandAfterAdd(hand, card) {
   const newHand = [...hand, card];
@@ -42,7 +42,7 @@ export function sortedHandAfterAdd(hand, card) {
   return [...others, ...numeric];
 }
 
-function makeInitialDeck() {
+export function makeInitialDeck() {
   const base = {};
   numberCards.forEach((n) => {
     const numValue = Number(n);
@@ -61,7 +61,7 @@ function makeInitialDeck() {
   };
   return { ...base, ...specials };
 }
-function sum(obj) {
+export function sum(obj) {
   return Object.values(obj).reduce((a, b) => a + b, 0);
 }
 
