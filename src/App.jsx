@@ -29,6 +29,7 @@ const specialCards = [
   "flip three",
   "second chance",
 ];
+const nonHandCards = new Set(["freeze", "flip three", "second chance"]);
 const allCards = [...numberCards, ...specialCards];
 
 export function sortedHandAfterAdd(hand, card) {
@@ -211,7 +212,7 @@ export default function Flip7App() {
     }
   };
 
-  function CardPill({ label, onPlay, onHand, left }) {
+  function CardPill({ label, onPlay, onHand, left, canAddToHand }) {
     return (
       <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition px-3 py-2 gap-2">
         <div className="flex items-center gap-2">
@@ -230,10 +231,12 @@ export default function Flip7App() {
             <Layers className="h-4 w-4 mr-1" />
             Played
           </Button>
-          <Button size="sm" onClick={onHand} className="rounded-xl">
-            <Hand className="h-4 w-4 mr-1" />
-            To hand
-          </Button>
+          {canAddToHand && (
+            <Button size="sm" onClick={onHand} className="rounded-xl">
+              <Hand className="h-4 w-4 mr-1" />
+              To hand
+            </Button>
+          )}
         </div>
       </div>
     );
@@ -296,6 +299,7 @@ export default function Flip7App() {
                             left={deck[c]}
                             onPlay={() => playCard(c)}
                             onHand={() => addToHand(c)}
+                            canAddToHand={!nonHandCards.has(c)}
                           />
                         ))}
                       </div>
@@ -321,7 +325,7 @@ export default function Flip7App() {
                           {handSpecialBadges.map(({ card, index }) => (
                             <Badge
                               key={`${card}-${index}`}
-                              className="rounded-xl text-sm flex items-center gap-2 special-card"
+                              className={`rounded-xl text-sm flex items-center gap-2 special-card${/^\+\d+$/.test(card) ? " special-plus" : ""}`}
                             >
                               {card}
                               <button
