@@ -72,8 +72,4 @@
   .special-card {
     @apply !bg-red-400 !text-white;
   }
-
-  .special-plus {
-    @apply !bg-amber-400 !text-amber-950;
-  }
 }

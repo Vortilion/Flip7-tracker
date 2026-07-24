@@ -325,7 +325,7 @@ export default function Flip7App() {
                           {handSpecialBadges.map(({ card, index }) => (
                             <Badge
                               key={`${card}-${index}`}
-                              className={`rounded-xl text-sm flex items-center gap-2 special-card${/^\+\d+$/.test(card) ? " special-plus" : ""}`}
+                              className={`rounded-xl text-sm flex items-center gap-2 special-card`}
                             >
                               {card}
                               <button
