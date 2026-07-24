@@ -136,6 +136,22 @@ export default function Flip7App() {
     [dangerProb],
   );
 
+  const handSpecialBadges = useMemo(
+    () =>
+      hand
+        .map((card, index) => ({ card, index }))
+        .filter(({ card }) => !numberCards.includes(card)),
+    [hand],
+  );
+
+  const handNumberBadges = useMemo(
+    () =>
+      hand
+        .map((card, index) => ({ card, index }))
+        .filter(({ card }) => numberCards.includes(card)),
+    [hand],
+  );
+
   // Actions
   const playCard = (card) => {
     if ((deck[card] || 0) > 0) {
@@ -300,22 +316,41 @@ export default function Flip7App() {
                         No cards in hand.
                       </p>
                     ) : (
-                      <div className="flex flex-wrap gap-2">
-                        {hand.map((c, i) => (
-                          <Badge
-                            key={`${c}-${i}`}
-                            className={`rounded-xl text-sm flex items-center gap-2${!numberCards.includes(c) ? " special-card" : ""}`}
-                          >
-                            {c}
-                            <button
-                              onClick={() => removeFromHand(i)}
-                              aria-label="Remove from hand"
-                              className="opacity-70 hover:opacity-100"
+                      <div className="space-y-2">
+                        <div className="flex flex-wrap gap-2">
+                          {handSpecialBadges.map(({ card, index }) => (
+                            <Badge
+                              key={`${card}-${index}`}
+                              className="rounded-xl text-sm flex items-center gap-2 special-card"
                             >
-                              <X className="h-3.5 w-3.5" />
-                            </button>
-                          </Badge>
-                        ))}
+                              {card}
+                              <button
+                                onClick={() => removeFromHand(index)}
+                                aria-label="Remove from hand"
+                                className="opacity-70 hover:opacity-100"
+                              >
+                                <X className="h-3.5 w-3.5" />
+                              </button>
+                            </Badge>
+                          ))}
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {handNumberBadges.map(({ card, index }) => (
+                            <Badge
+                              key={`${card}-${index}`}
+                              className="rounded-xl text-sm flex items-center gap-2"
+                            >
+                              {card}
+                              <button
+                                onClick={() => removeFromHand(index)}
+                                aria-label="Remove from hand"
+                                className="opacity-70 hover:opacity-100"
+                              >
+                                <X className="h-3.5 w-3.5" />
+                              </button>
+                            </Badge>
+                          ))}
+                        </div>
                       </div>
                     )}
                     <div className="flex gap-2 mt-4">
