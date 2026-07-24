@@ -30,6 +30,10 @@ const specialCards = [
   "second chance",
 ];
 const nonHandCards = new Set(["freeze", "flip three", "second chance", "x2", "+10", "+8", "+6", "+4", "+2"]);
+const plusCards = new Set(["+2", "+4", "+6", "+8", "+10", "x2"]);
+const freezeCards = new Set(["freeze"]);
+const flipThreeCards = new Set(["flip three"]);
+const secondChanceCards = new Set(["second chance"]);
 const allCards = [...numberCards, ...specialCards];
 
 export function sortedHandAfterAdd(hand, card) {
@@ -216,7 +220,7 @@ export default function Flip7App() {
     return (
       <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition px-3 py-2 gap-2">
         <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="text-sm px-2 py-1 rounded-xl">
+          <Badge variant="secondary" className={`text-sm px-2 py-1 rounded-xl ${plusCards.has(label) ? "bg-amber-400 text-amber-950 hover:bg-amber-400" : freezeCards.has(label) ? "bg-blue-200 text-blue-900 hover:bg-blue-200" : flipThreeCards.has(label) ? "bg-yellow-200 text-yellow-900 hover:bg-yellow-200" : secondChanceCards.has(label) ? "bg-red-400 text-red-950 hover:bg-red-400" : ""}`}>
             {label}
           </Badge>
           <span className="text-xs text-slate-600">{left} left</span>
