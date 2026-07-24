@@ -68,6 +68,69 @@ describe("sortedHandAfterAdd", () => {
     result = sortedHandAfterAdd(result, "flip three");
     expect(result).toEqual(["freeze", "+2", "flip three"]);
   });
+
+  it("should treat 0 as numeric, not special", () => {
+    // regression: card '0' was previously not in numberCards and was grouped with specials
+    const hand = ["+2", "freeze"];
+    const result = sortedHandAfterAdd(hand, "0");
+    expect(result).toEqual(["+2", "freeze", "0"]);
+  });
+
+  it("should place 0 numerically before other numbers", () => {
+    const hand = ["3", "7"];
+    const result = sortedHandAfterAdd(hand, "0");
+    expect(result).toEqual(["0", "3", "7"]);
+  });
+
+  it("should treat second chance as special (before numerics)", () => {
+    const hand = ["1", "5"];
+    const result = sortedHandAfterAdd(hand, "second chance");
+    expect(result).toEqual(["second chance", "1", "5"]);
+  });
+
+  it("should treat flip three as special (before numerics)", () => {
+    const hand = ["3", "9"];
+    const result = sortedHandAfterAdd(hand, "flip three");
+    expect(result).toEqual(["flip three", "3", "9"]);
+  });
+
+  it("all specials appear before all numerics in mixed hand", () => {
+    let result = [];
+    result = sortedHandAfterAdd(result, "5");
+    result = sortedHandAfterAdd(result, "freeze");
+    result = sortedHandAfterAdd(result, "3");
+    result = sortedHandAfterAdd(result, "+4");
+    result = sortedHandAfterAdd(result, "second chance");
+    result = sortedHandAfterAdd(result, "1");
+    // specials: freeze, +4, second chance — numerics: 1, 3, 5
+    const specials = result.filter((c) =>
+      ["freeze", "+4", "second chance"].includes(c),
+    );
+    const numerics = result.filter((c) => ["1", "3", "5"].includes(c));
+    const lastSpecialIdx = result.lastIndexOf(
+      specials[specials.length - 1],
+    );
+    const firstNumericIdx = result.indexOf(numerics[0]);
+    expect(lastSpecialIdx).toBeLessThan(firstNumericIdx);
+  });
+
+  it("should correctly carry original indices when splitting specials and numerics", () => {
+    // validates that handSpecialBadges / handNumberBadges can rely on correct indices
+    const hand = ["freeze", "2", "7"];
+    const withExtra = sortedHandAfterAdd(hand, "5");
+    // specials group: indices where card is not numeric
+    const specialEntries = withExtra
+      .map((c, i) => ({ c, i }))
+      .filter(({ c }) => isNaN(Number(c)));
+    // numeric group: indices where card is numeric
+    const numericEntries = withExtra
+      .map((c, i) => ({ c, i }))
+      .filter(({ c }) => !isNaN(Number(c)));
+    // all special indices come before all numeric indices
+    const maxSpecialIdx = Math.max(...specialEntries.map((e) => e.i));
+    const minNumericIdx = Math.min(...numericEntries.map((e) => e.i));
+    expect(maxSpecialIdx).toBeLessThan(minNumericIdx);
+  });
 });
 
 describe("makeInitialDeck", () => {
@@ -143,6 +206,21 @@ describe("makeInitialDeck", () => {
     const deck1 = makeInitialDeck();
     const deck2 = makeInitialDeck();
     expect(deck1).toEqual(deck2);
+  });
+
+  it("card 0 count should be 1, not 0 (regression: was previously index-based)", () => {
+    // Before fix, numberCards started at "1"; "0" was added separately.
+    // Now numberCards includes "0" and count = numValue === 0 ? 1 : numValue.
+    const deck = makeInitialDeck();
+    expect(deck["0"]).toBe(1);
+    expect(deck["1"]).toBe(1); // count = numValue = 1
+  });
+
+  it("numeric card counts should equal their face value (except 0)", () => {
+    const deck = makeInitialDeck();
+    for (let n = 1; n <= 12; n++) {
+      expect(deck[String(n)]).toBe(n);
+    }
   });
 });
 
