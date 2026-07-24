@@ -29,7 +29,7 @@ const specialCards = [
   "flip three",
   "second chance",
 ];
-const nonHandCards = new Set(["freeze", "flip three", "second chance"]);
+const nonHandCards = new Set(["freeze", "flip three", "second chance", "x2"]);
 const allCards = [...numberCards, ...specialCards];
 
 export function sortedHandAfterAdd(hand, card) {
