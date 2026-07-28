@@ -233,12 +233,12 @@ export default function Flip7App() {
             className="rounded-xl border-slate-300"
           >
             <Layers className="h-4 w-4 mr-1" />
-            Played
+            <span className="min-[768px]:max-[1049px]:hidden">Played</span>
           </Button>
           {canAddToHand && (
             <Button size="sm" onClick={onHand} className="rounded-xl">
               <Hand className="h-4 w-4 mr-1" />
-              To hand
+              <span className="min-[768px]:max-[1049px]:hidden">To hand</span>
             </Button>
           )}
         </div>
