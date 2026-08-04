@@ -79,6 +79,15 @@ export default function Flip7App() {
   const [sortByProb, setSortByProb] = useState(true);
   const [history, setHistory] = useState([]);
 
+  const handEligibleCards = useMemo(
+    () => allCards.filter((card) => !nonHandCards.has(card)),
+    [],
+  );
+  const nonHandOnlyCards = useMemo(
+    () => allCards.filter((card) => nonHandCards.has(card)),
+    [],
+  );
+
   // Load state
   useEffect(() => {
     try {
@@ -248,7 +257,7 @@ export default function Flip7App() {
 
   return (
     <div className="min-h-screen w-full bg-slate-50 text-slate-900">
-      <div className="mx-auto max-w-7xl px-4 py-8">
+      <div className="mx-auto max-w-7xl px-4 pt-4 pb-8">
         {/* Tabs with Undo + Reset inline */}
         <Tabs defaultValue="play" className="space-y-6">
           <div className="flex items-center justify-end">
@@ -275,11 +284,11 @@ export default function Flip7App() {
           {/* Play Tab */}
           <TabsContent
             value="play"
-            className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 space-y-6-y-6"
+            className="mt-1 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 space-y-6-y-6"
           >
-            <div className="grid md:grid-cols-5 gap-6">
+            <div className="grid md:grid-cols-8 gap-6">
               {/* Left: Deck */}
-              <div className="md:col-span-3 space-y-6">
+              <div className="md:col-span-5 space-y-6">
                 <Card className="rounded-xl border-slate-200 bg-white">
                   <CardHeader>
                     <CardTitle className="flex items-center justify-between">
@@ -295,17 +304,34 @@ export default function Flip7App() {
                       className="h-2 rounded-full mb-4"
                     />
                     <ScrollArea className="pr-2">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        {allCards.map((c) => (
-                          <CardPill
-                            key={c}
-                            label={c}
-                            left={deck[c]}
-                            onPlay={() => playCard(c)}
-                            onHand={() => addToHand(c)}
-                            canAddToHand={!nonHandCards.has(c)}
-                          />
-                        ))}
+                      <div className="space-y-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {handEligibleCards.map((c) => (
+                            <CardPill
+                              key={c}
+                              label={c}
+                              left={deck[c]}
+                              onPlay={() => playCard(c)}
+                              onHand={() => addToHand(c)}
+                              canAddToHand
+                            />
+                          ))}
+                        </div>
+                        <div className="space-y-2">
+                        <div className="flex flex-wrap gap-3">
+                          {nonHandOnlyCards.map((c) => (
+                            <div key={c} className="min-w-0 flex-1 sm:flex-none sm:min-w-[220px]">
+                              <CardPill
+                                label={c}
+                                left={deck[c]}
+                                onPlay={() => playCard(c)}
+                                onHand={() => addToHand(c)}
+                                canAddToHand={false}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                        </div>
                       </div>
                     </ScrollArea>
                   </CardContent>
@@ -313,7 +339,7 @@ export default function Flip7App() {
               </div>
 
               {/* Right: Assistant */}
-              <div className="md:col-span-2 space-y-6">
+              <div className="md:col-span-3 space-y-6">
                 <Card className="rounded-xl border-slate-200 bg-white">
                   <CardHeader>
                     <CardTitle>Your Hand</CardTitle>
