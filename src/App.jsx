@@ -251,7 +251,9 @@ export default function Flip7App() {
     showLeft = true,
   }) {
     return (
-      <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition px-3 py-2 gap-2">
+      <div
+        className={`flex items-center justify-between rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition px-3 py-2 gap-2 ${left === 0 ? "grayscale opacity-50" : ""}`}
+      >
         <div className="flex items-center gap-2">
           <Badge
             variant="secondary"
@@ -268,13 +270,19 @@ export default function Flip7App() {
             size="sm"
             variant="outline"
             onClick={onPlay}
+            disabled={left === 0}
             className="rounded-xl border-slate-300"
           >
             <Layers className="h-4 w-4 mr-1 action-button-icon" />
             <span className="action-button-label">Played</span>
           </Button>
           {canAddToHand && (
-            <Button size="sm" onClick={onHand} className="rounded-xl">
+            <Button
+              size="sm"
+              onClick={onHand}
+              disabled={left === 0}
+              className="rounded-xl"
+            >
               <Hand className="h-4 w-4 mr-1 action-button-icon" />
               <span className="action-button-label">To hand</span>
             </Button>
