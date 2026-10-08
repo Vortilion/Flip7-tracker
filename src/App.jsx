@@ -340,7 +340,7 @@ export default function Flip7App() {
                               key={c}
                               label={c}
                               left={deck[c]}
-                              showLeft={!c.startsWith("+")}
+                              showLeft={!c.startsWith("+") && c !== "x2"}
                               onPlay={() => playCard(c)}
                               onHand={() => addToHand(c)}
                               canAddToHand
@@ -354,7 +354,7 @@ export default function Flip7App() {
                                 key={c}
                                 label={c}
                                 left={deck[c]}
-                                showLeft={!c.startsWith("+")}
+                                showLeft={!c.startsWith("+") && c !== "x2"}
                                 onPlay={() => playCard(c)}
                                 onHand={() => addToHand(c)}
                                 canAddToHand={false}
