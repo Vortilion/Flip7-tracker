@@ -29,11 +29,28 @@ const specialCards = [
   "flip three",
   "second chance",
 ];
-const nonHandCards = new Set(["freeze", "flip three", "second chance", "x2", "+10", "+8", "+6", "+4", "+2"]);
-const plusCards = new Set(["+2", "+4", "+6", "+8", "+10", "x2"]);
-const freezeCards = new Set(["freeze"]);
-const flipThreeCards = new Set(["flip three"]);
-const secondChanceCards = new Set(["second chance"]);
+const nonHandCards = new Set([
+  "freeze",
+  "flip three",
+  "second chance",
+  "x2",
+  "+10",
+  "+8",
+  "+6",
+  "+4",
+  "+2",
+]);
+const specialCardColors = {
+  "+2": "bg-amber-400 text-amber-950 hover:bg-amber-400",
+  "+4": "bg-amber-400 text-amber-950 hover:bg-amber-400",
+  "+6": "bg-amber-400 text-amber-950 hover:bg-amber-400",
+  "+8": "bg-amber-400 text-amber-950 hover:bg-amber-400",
+  "+10": "bg-amber-400 text-amber-950 hover:bg-amber-400",
+  x2: "bg-amber-400 text-amber-950 hover:bg-amber-400",
+  freeze: "bg-blue-200 text-blue-900 hover:bg-blue-200",
+  "flip three": "bg-yellow-200 text-yellow-900 hover:bg-yellow-200",
+  "second chance": "bg-red-400 text-red-950 hover:bg-red-400",
+};
 const allCards = [...numberCards, ...specialCards];
 
 export function sortedHandAfterAdd(hand, card) {
@@ -225,14 +242,26 @@ export default function Flip7App() {
     }
   };
 
-  function CardPill({ label, onPlay, onHand, left, canAddToHand }) {
+  function CardPill({
+    label,
+    onPlay,
+    onHand,
+    left,
+    canAddToHand,
+    showLeft = true,
+  }) {
     return (
       <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition px-3 py-2 gap-2">
         <div className="flex items-center gap-2">
-          <Badge variant="secondary" className={`text-sm px-2 py-1 rounded-xl ${plusCards.has(label) ? "bg-amber-400 text-amber-950 hover:bg-amber-400" : freezeCards.has(label) ? "bg-blue-200 text-blue-900 hover:bg-blue-200" : flipThreeCards.has(label) ? "bg-yellow-200 text-yellow-900 hover:bg-yellow-200" : secondChanceCards.has(label) ? "bg-red-400 text-red-950 hover:bg-red-400" : ""}`}>
+          <Badge
+            variant="secondary"
+            className={`text-sm px-2 py-1 rounded-xl ${specialCardColors[label] || ""}`}
+          >
             {label}
           </Badge>
-          <span className="text-xs text-slate-600">{left} left</span>
+          {showLeft && (
+            <span className="text-xs text-slate-600">{left} left</span>
+          )}
         </div>
         <div className="flex gap-2">
           <Button
@@ -241,13 +270,13 @@ export default function Flip7App() {
             onClick={onPlay}
             className="rounded-xl border-slate-300"
           >
-            <Layers className="h-4 w-4 mr-1" />
-            <span className="min-[768px]:max-[1049px]:hidden">Played</span>
+            <Layers className="h-4 w-4 mr-1 action-button-icon" />
+            <span className="action-button-label">Played</span>
           </Button>
           {canAddToHand && (
             <Button size="sm" onClick={onHand} className="rounded-xl">
-              <Hand className="h-4 w-4 mr-1" />
-              <span className="min-[768px]:max-[1049px]:hidden">To hand</span>
+              <Hand className="h-4 w-4 mr-1 action-button-icon" />
+              <span className="action-button-label">To hand</span>
             </Button>
           )}
         </div>
@@ -286,9 +315,9 @@ export default function Flip7App() {
             value="play"
             className="mt-1 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 space-y-6-y-6"
           >
-            <div className="grid md:grid-cols-8 gap-6">
+            <div className="grid min-[930px]:grid-cols-8 gap-6">
               {/* Left: Deck */}
-              <div className="md:col-span-5 space-y-6">
+              <div className="min-[930px]:col-span-5 space-y-6">
                 <Card className="rounded-xl border-slate-200 bg-white">
                   <CardHeader>
                     <CardTitle className="flex items-center justify-between">
@@ -305,12 +334,13 @@ export default function Flip7App() {
                     />
                     <ScrollArea className="pr-2">
                       <div className="space-y-3">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 min-[738px]:grid-cols-2 gap-3">
                           {handEligibleCards.map((c) => (
                             <CardPill
                               key={c}
                               label={c}
                               left={deck[c]}
+                              showLeft={!c.startsWith("+")}
                               onPlay={() => playCard(c)}
                               onHand={() => addToHand(c)}
                               canAddToHand
@@ -318,19 +348,19 @@ export default function Flip7App() {
                           ))}
                         </div>
                         <div className="space-y-2">
-                        <div className="flex flex-wrap gap-3">
-                          {nonHandOnlyCards.map((c) => (
-                            <div key={c} className="min-w-0 flex-1 sm:flex-none sm:min-w-[220px]">
+                          <div className="grid grid-cols-1 min-[738px]:grid-cols-2 gap-3">
+                            {nonHandOnlyCards.map((c) => (
                               <CardPill
+                                key={c}
                                 label={c}
                                 left={deck[c]}
+                                showLeft={!c.startsWith("+")}
                                 onPlay={() => playCard(c)}
                                 onHand={() => addToHand(c)}
                                 canAddToHand={false}
                               />
-                            </div>
-                          ))}
-                        </div>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </ScrollArea>
@@ -339,7 +369,7 @@ export default function Flip7App() {
               </div>
 
               {/* Right: Assistant */}
-              <div className="md:col-span-3 space-y-6">
+              <div className="min-[930px]:col-span-3 space-y-6">
                 <Card className="rounded-xl border-slate-200 bg-white">
                   <CardHeader>
                     <CardTitle>Your Hand</CardTitle>
@@ -355,7 +385,7 @@ export default function Flip7App() {
                           {handSpecialBadges.map(({ card, index }) => (
                             <Badge
                               key={`${card}-${index}`}
-                              className={`rounded-xl text-sm flex items-center gap-2 special-card`}
+                              className={`rounded-xl text-sm flex items-center gap-2 ${specialCardColors[card] || ""}`}
                             >
                               {card}
                               <button

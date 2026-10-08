@@ -65,11 +65,22 @@
   }
   body {
     @apply bg-background text-foreground;
+    min-width: 398px;
   }
 }
 
 @layer components {
   .special-card {
     @apply !bg-red-400 !text-white;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1214px) {
+  .action-button-label {
+    display: none !important;
+  }
+
+  .action-button-icon {
+    margin-right: 0 !important;
   }
 }
